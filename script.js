@@ -1,111 +1,53 @@
-var startBtn = document.getElementById("startBtn");
-var submitBtn = document.querySelector("button.submitBtn")
-var secondsLeft = (questions.length * 15 + 1);
-var timerEl = document.getElementById("timer");
-var submitScoreEl = document.querySelector("#submit-score");
-var userScoreEl = document.getElementById("user-score");
-var userNameInput;
-var questionHead = document.getElementById("questions");
-var answerChoices = document.getElementById("answers");
-
-var questionNumber = -1;
-var answer;
+var startQuiz = document.querySelector("#startQuiz");
+var quizBtn = document.querySelectorAll(".quizBtn");
+var currentIndex = 0;
 
 
-function startTimer() {
-    document.getElementById("home").classList.add('d-none');
-    document.getElementById("quiz").classList.remove('d-none');
-    setTimer();
 
-    makeQuestions();
-}
-
-function setTimer() {
-
-    var countdown = setInterval(function () {
-        secondsLeft--;
-        timerEl.textContent = "Time: " + secondsLeft;
-
-        if (secondsLeft === 0 || questionNumber === questions.length) {
-            clearInterval(countdown);
-            setTimeout(displayScore, 500);
-        }
-    }, 1000);
-}
-
-function makeQuestions() {
-    questionNumber++;
-    answer = questions[questionNumber].answer
-
-    questionHead.textContent = questions[questionNumber].title;
-    answerChoices.innerHTML = "";
-
-    var choices = questions[questionNumber].choices;
-
-    for (var q = 0; q < choices.length; q++) {
-        var nextChoice = document.createElement("button");
-
-        nextChoice.textContent = choices[q]
-        answerBtn = answerChoices.appendChild(nextChoice).setAttribute("class", "p-3 m-1 btn btn-light btn-block");
-    }
-}
+var score = 0;
 
 
-function displayScore() {
-    document.getElementById("quiz").classList.add('d-none');
-    document.getElementById("submit-score").classList.remove('d-none');
-    userScoreEl.textContent = "Your final score is " + secondsLeft + ".";
-}
-
-
-startBtn.addEventListener("click", startTimer);
-submitBtn.addEventListener("click", function (event) {
+startQuiz.addEventListener("click", function(event){
     event.stopPropagation();
-    addScore();
+    startTimer();
+    console.log("Current Index at startQuiz click" + currentIndex);
+    document.querySelector("#boxOne").style.display = "none"; 
     
-    window.location.href = 'scorepage.html'
+    document.querySelector("#boxTwo").style.display = "block";
+    showQs();
 });
 
-function addScore () {
-    userNameInput = document.getElementById("userName").value
+function showQs() {
+    var question = quizQs[currentIndex];
     
-
-var newScore = {
-        name: userNameInput,
-        score: secondsLeft
-    };
-  
-    var highScores = JSON.parse(localStorage.getItem("highScores") || "[]");
-    highScores.push(newScore)
-    localStorage.setItem("highScores", JSON.stringify(highScores));
-
+    document.querySelector("#title").innerHTML = question.title;
+    document.querySelector("#chA").innerHTML = question.choices[0];
+    document.querySelector("#chB").innerHTML = question.choices[1];
+    document.querySelector("#chC").innerHTML = question.choices[2];
+    document.querySelector("#chD").innerHTML = question.choices[3];
 }
 
-function hideFeedback(){
-    var pEl= document.getElementsByClassName("feedback")[0]
-    pEl.style.display='none'
+for (var i = 0; i < quizBtn.length; i++) {
+    quizBtn[i].addEventListener("click", function userAnswer(event) {
+        event.stopPropagation();
+        
+        if(event.currentTarget.innerText === quizQs[currentIndex].answer){
+            score++;
+            console.log(score);
+            
+            document.querySelector("#checkAns").innerHTML = "correct";
+        } else {
+            document.querySelector("#checkAns").innerHTML = "wrong";
+            secondsLeft = secondsLeft - 15;
+        }
+        console.log("Current Index before ++" + currentIndex);
+        currentIndex++;
+        
+        if (currentIndex < 5) {
+        showQs();
+        }
+    });
 }
-
-function showFeedback(){
-    var pEl= document.getElementsByClassName("feedback")[0]
-    pEl.removeAttribute('style');
-}
-
-answerChoices.addEventListener("click", function (event) {
-    var pEl= document.getElementsByClassName("feedback")[0]
-    
-    if (answer === event.target.textContent) {   
-        pEl.innerHTML = "Correct!";
-        setTimeout(hideFeedback,1000);
-        showFeedback();   
-    } else {
-        pEl.innerHTML = "Sorry, that's incorrect.";
-        setTimeout(hideFeedback,1000);
-        secondsLeft = secondsLeft - 10;
-        showFeedback();
-    }    
-    makeQuestions();
-});
   
 var quizQs = [
     {
@@ -119,9 +61,9 @@ var quizQs = [
         answer: "square brackets"
     },
     {
-        title: "Terminates the current loop and goes to the statement following the current statement: ",
-        choices: ["yeet", "break", "continue", "stop"],
-        answer: "break"
+        title: "Who created Javascript: ",
+        choices: ["Steve Jobs", "Brendan Eich", "Bill Gates", "Sid Meier"],
+        answer: "Brendan Eich"
     },
     {
         title: "The greater than/or equal operator is: ",
@@ -129,8 +71,8 @@ var quizQs = [
         answer: ">="
     },
     {
-        title: "This is a value that is passed back from one function to another: ",
-        choices: ["return", "class", "functionClass", "for"],
-        answer: "return"
+        title: "Which data type isn't suppoerted by Javascript: ",
+        choices: ["number", "symbol", "string", "primitive"],
+        answer: "primitive"
     },
   ];
