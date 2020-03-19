@@ -35,6 +35,8 @@ clearHighScore.addEventListener("click", function() {
     window.location.reload();
 });
 
+
+// Timer //
 var userName = document.querySelector("#userName");
 var endMsg = document.querySelector("#endMsg");
 var yourScore = document.querySelector("#yourScore");
@@ -81,8 +83,6 @@ function startTimer () {
 
 submitBtn.addEventListener("click", function(event) {
   event.stopPropagation();
-  
-  console.log("on submitBtn click print out score: " + score); 
 
  
   var initials = userName.value;

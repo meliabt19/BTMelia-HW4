@@ -1,6 +1,5 @@
 body {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-}       
+    font-family: 'Times New Roman', Times, serif }
 
 .countdownBox {
     color: black;
@@ -16,6 +15,10 @@ body {
     outline: 1px solid #dddddd;
     overflow: auto;
     width: 75%;
+}
+
+#navItem {
+    margin-left: auto;
 }
 
 .startHidden {

@@ -48,7 +48,7 @@ for (var i = 0; i < quizBtn.length; i++) {
         }
     });
 }
-  
+  // Questions //
 var quizQs = [
     {
         title: "NaN stands for: ",
